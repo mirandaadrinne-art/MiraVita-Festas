@@ -70,17 +70,22 @@ textarea.inp{min-height:76px;resize:vertical}
 .v-top .acoes{display:flex;gap:10px;align-items:center}
 
 .hero{background:var(--rosa);position:relative;overflow:hidden;padding-bottom:72px}
-.varal{position:relative;height:150px;max-width:1400px;margin:0 auto}
-.varal svg.fio{position:absolute;inset:0;width:100%;height:100%}
-.bandeiras{position:absolute;inset:0;display:flex;justify-content:space-between;padding:0 2.5%}
-.band{position:relative;width:6.2%;min-width:52px;border:0;background:none;padding:0;transform-origin:50% 0;animation:balanca 1.1s cubic-bezier(.3,1.6,.5,1) both}
-.band .tri{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:9px;height:84px;clip-path:polygon(0 0,100% 0,100% 64%,50% 100%,0 64%);transition:transform .2s, background .2s;line-height:1.05}
-.band .ds{font-size:12px;font-weight:600;opacity:.85}
-.band .dn{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.03em}
-.band:hover .tri{transform:translateY(4px)}
-.band[aria-pressed="true"] .tri{background:var(--framboesa)!important;color:#fff;transform:translateY(10px) scale(1.08)}
-.band .marca-fds{position:absolute;left:50%;bottom:-22px;transform:translateX(-50%);font-size:11px;color:var(--uva-2);white-space:nowrap}
-@keyframes balanca{0%{transform:rotate(var(--rot)) translateY(-60px);opacity:0}100%{transform:rotate(var(--rot)) translateY(var(--y));opacity:1}}
+.varal{position:relative;max-width:1400px;margin:0 auto;padding:22px 2.5% 0}
+.baloes{display:flex;justify-content:space-between;gap:4px}
+.balao{position:relative;width:6.4%;min-width:56px;border:0;background:none;padding:0;transform:translateY(var(--y));animation:sobe-balao .9s cubic-bezier(.25,1.4,.5,1) both;transition:transform .25s}
+.balao svg{display:block;width:100%;height:auto;overflow:visible}
+.balao .corpo-b{fill:var(--cor);transition:fill .2s}
+.balao .no{fill:var(--cor);transition:fill .2s}
+.balao .fio-b{stroke:var(--uva);opacity:.55}
+.balao .txt{position:absolute;left:0;right:0;top:0;height:53%;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.02;color:var(--uva)}
+.balao .ds{font-size:12px;font-weight:600;opacity:.85}
+.balao .dn{font-family:var(--display);font-weight:800;font-size:25px;letter-spacing:-.03em}
+.balao:hover{transform:translateY(calc(var(--y) - 6px))}
+.balao[aria-pressed="true"]{transform:translateY(calc(var(--y) - 10px)) scale(1.1);z-index:2}
+.balao[aria-pressed="true"] .corpo-b,.balao[aria-pressed="true"] .no{fill:var(--framboesa)}
+.balao[aria-pressed="true"] .txt{color:#fff}
+.balao:focus-visible{outline-offset:4px}
+@keyframes sobe-balao{0%{transform:translateY(calc(var(--y) + 90px));opacity:0}100%{transform:translateY(var(--y));opacity:1}}
 
 .hero-in{max-width:1200px;margin:0 auto;padding:28px 24px 0;display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:center}
 .hero h1{font-size:clamp(2.6rem,6.2vw,5.4rem);font-weight:800;letter-spacing:-.045em;line-height:.95;max-width:11ch}
@@ -397,10 +402,9 @@ a.kpi:hover{border-color:var(--uva-3)}
 @media (max-width:640px){
   .v-top-in{padding:12px 16px;gap:12px}
   .v-top .acoes .btn-g{display:none}
-  .varal{height:auto;overflow-x:auto;overflow-y:hidden;padding-bottom:30px}
-  .varal svg.fio{display:none}
-  .bandeiras{position:static;width:max-content;gap:6px;padding:0 16px;border-top:2px solid var(--uva)}
-  .band{width:56px;animation:none;transform:none!important}
+  .varal{overflow-x:auto;overflow-y:hidden;padding:16px 0 8px}
+  .baloes{width:max-content;gap:8px;padding:0 16px}
+  .balao{width:58px}
   .secao{padding:64px 16px}
   .hero-in{padding:24px 16px 0}
   .grade2,.grade3,.dinheiro{grid-template-columns:1fr}

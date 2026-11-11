@@ -157,7 +157,7 @@ function renderVitrine() {
       <div class="hero-in">
         <div>
           <h1 id="h-hero">Seu tema, só seu, no dia da sua festa.</h1>
-          <p class="lead">Escolha a data no varal e veja na hora quais decorações estão livres. Mesa completa com montagem no local, ou pegue e monte para retirar no ateliê.</p>
+          <p class="lead">Escolha a data nos balões e veja na hora quais decorações estão livres. Mesa completa com montagem no local, ou pegue e monte para retirar no ateliê.</p>
           <div class="resumo-dia" id="resumo-dia" aria-live="polite"></div>
         </div>
         <div class="vitrine-arte" id="hero-arte"></div>
@@ -166,7 +166,7 @@ function renderVitrine() {
 
     <section class="secao" id="temas" aria-labelledby="h-temas">
       <div class="secao-cab">
-        <div><h2 id="h-temas">Temas para ${esc(fDia(C.parse(UI.vDia + 'T00:00')))}</h2><p class="sub">A disponibilidade muda com a data escolhida no varal. Quem confirma a reserva é sempre a ${esc(e.nome)}, depois do sinal.</p></div>
+        <div><h2 id="h-temas">Temas para ${esc(fDia(C.parse(UI.vDia + 'T00:00')))}</h2><p class="sub">A disponibilidade muda com a data escolhida nos balões. Quem confirma a reserva é sempre a ${esc(e.nome)}, depois do sinal.</p></div>
         <div class="filtros" role="group" aria-label="Filtrar por categoria" id="v-filtros"></div>
       </div>
       <div class="catalogo" id="catalogo"></div>
@@ -224,17 +224,15 @@ function renderVitrine() {
 
 function renderVaral() {
   const dias = proximosDias();
-  const n = dias.length, sag = 46;
-  const ys = dias.map((_, i) => { const t = (i + .5) / n; return 4 * sag * t * (1 - t); });
-  const rots = dias.map((_, i) => { const t = (i + .5) / n; return Math.atan(4 * sag * (1 - 2 * t) / 1000 * 6) * 180 / Math.PI * .5; });
+  const alturas = [10, 30, 4, 24, 14, 34, 8, 26, 2, 20, 32, 12, 28, 6];
   const cores = ['var(--menta)', 'var(--ouro)', 'var(--rosa-2)', 'var(--lilas)', 'var(--papel)'];
   $('#varal').innerHTML = `
-    <svg class="fio" viewBox="0 0 1000 150" preserveAspectRatio="none" aria-hidden="true"><path d="M-10 6 Q500 ${6 + sag * 2} 1010 6" fill="none" stroke="#3A0F1F" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>
-    <div class="bandeiras" role="group" aria-label="Escolha a data da festa">
+    <div class="baloes" role="group" aria-label="Escolha a data da festa">
       ${dias.map((d, i) => {
-        const k = C.dayKey(d), sel = k === UI.vDia;
-        return `<button class="band" style="--y:${ys[i].toFixed(1)}px;--rot:${rots[i].toFixed(2)}deg;transform:rotate(${rots[i].toFixed(2)}deg) translateY(${ys[i].toFixed(1)}px);animation-delay:${i * 45}ms" aria-pressed="${sel}" data-vdia="${k}" aria-label="${fDiaLongo(d)}${i === 0 ? ', hoje' : ''}">
-          <span class="tri" style="background:${cores[i % cores.length]}"><span class="ds">${i === 0 ? 'hoje' : DIAS[d.getDay()]}</span><span class="dn">${d.getDate()}</span></span></button>`;
+        const k = C.dayKey(d), sel = k === UI.vDia, curva = i % 2 ? 'q6 9 0 18 t0 18 t0 18' : 'q-6 9 0 18 t0 18 t0 18';
+        return `<button class="balao" style="--y:${alturas[i % alturas.length]}px;--cor:${cores[i % cores.length]};animation-delay:${i * 55}ms" aria-pressed="${sel}" data-vdia="${k}" aria-label="${fDiaLongo(d)}${i === 0 ? ', hoje' : ''}">
+          <svg viewBox="0 0 64 128" aria-hidden="true"><path class="fio-b" d="M32 72 ${curva}" fill="none" stroke-width="1.4"/><path class="no" d="M27 70h10l-5 -7z"/><ellipse class="corpo-b" cx="32" cy="34" rx="28" ry="32"/><ellipse cx="13" cy="30" rx="3.5" ry="8" fill="#fff" opacity=".45" transform="rotate(15 13 30)"/></svg>
+          <span class="txt"><span class="ds">${i === 0 ? 'hoje' : DIAS[d.getDay()]}</span><span class="dn">${d.getDate()}</span></span></button>`;
       }).join('')}
     </div>`;
 }
