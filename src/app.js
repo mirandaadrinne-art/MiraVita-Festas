@@ -157,7 +157,7 @@ function renderVitrine() {
       <div class="hero-in">
         <div>
           <h1 id="h-hero">Seu tema, só seu, no dia da sua festa.</h1>
-          <p class="lead">Escolha a data nos balões e veja na hora quais decorações estão livres. Mesa completa com montagem no local, ou pegue e monte para retirar no ateliê.</p>
+          <p class="lead">Escolha a data no varal e veja na hora quais decorações estão livres. Mesa completa com montagem no local, ou pegue e monte para retirar no ateliê.</p>
           <div class="resumo-dia" id="resumo-dia" aria-live="polite"></div>
         </div>
         <div class="vitrine-arte" id="hero-arte"></div>
@@ -166,7 +166,7 @@ function renderVitrine() {
 
     <section class="secao" id="temas" aria-labelledby="h-temas">
       <div class="secao-cab">
-        <div><h2 id="h-temas">Temas para ${esc(fDia(C.parse(UI.vDia + 'T00:00')))}</h2><p class="sub">A disponibilidade muda com a data escolhida nos balões. Quem confirma a reserva é sempre a ${esc(e.nome)}, depois do sinal.</p></div>
+        <div><h2 id="h-temas">Temas para ${esc(fDia(C.parse(UI.vDia + 'T00:00')))}</h2><p class="sub">A disponibilidade muda com a data escolhida no varal. Quem confirma a reserva é sempre a ${esc(e.nome)}, depois do sinal.</p></div>
         <div class="filtros" role="group" aria-label="Filtrar por categoria" id="v-filtros"></div>
       </div>
       <div class="catalogo" id="catalogo"></div>
@@ -224,15 +224,17 @@ function renderVitrine() {
 
 function renderVaral() {
   const dias = proximosDias();
+  const n = dias.length, sag = 46;
+  const ys = dias.map((_, i) => { const t = (i + .5) / n; return 4 * sag * t * (1 - t); });
+  const rots = dias.map((_, i) => { const t = (i + .5) / n; return Math.atan(4 * sag * (1 - 2 * t) / 1000 * 6) * 180 / Math.PI * .5; });
   const cores = ['var(--menta)', 'var(--ouro)', 'var(--rosa-2)', 'var(--lilas)', 'var(--papel)'];
-  const extras = ['var(--rosa-2)', 'var(--menta)', 'var(--ouro)', 'var(--rosa-2)', 'var(--menta)'];
   $('#varal').innerHTML = `
-    <div class="baloes" role="group" aria-label="Escolha a data da festa">
+    <svg class="fio" viewBox="0 0 1000 150" preserveAspectRatio="none" aria-hidden="true"><path d="M-10 6 Q500 ${6 + sag * 2} 1010 6" fill="none" stroke="#3A0F1F" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>
+    <div class="bandeiras" role="group" aria-label="Escolha a data da festa">
       ${dias.map((d, i) => {
-        const k = C.dayKey(d), sel = k === UI.vDia, y = Math.round(Math.sin(i * 0.85) * 14);
-        return `<button class="balao" style="--y:${y}px;--cor:${cores[i % cores.length]};--extra:${extras[i % extras.length]};--extra2:${cores[(i + 2) % cores.length]};animation-delay:${i * 50}ms" aria-pressed="${sel}" data-vdia="${k}" aria-label="${fDiaLongo(d)}${i === 0 ? ', hoje' : ''}">
-          <i class="mini m1" aria-hidden="true"></i><i class="mini m2" aria-hidden="true"></i>
-          <span class="bola-b"><span class="ds">${i === 0 ? 'hoje' : DIAS[d.getDay()]}</span><span class="dn">${d.getDate()}</span></span></button>`;
+        const k = C.dayKey(d), sel = k === UI.vDia;
+        return `<button class="band" style="--y:${ys[i].toFixed(1)}px;--rot:${rots[i].toFixed(2)}deg;transform:rotate(${rots[i].toFixed(2)}deg) translateY(${ys[i].toFixed(1)}px);animation-delay:${i * 45}ms" aria-pressed="${sel}" data-vdia="${k}" aria-label="${fDiaLongo(d)}${i === 0 ? ', hoje' : ''}">
+          <span class="tri" style="background:${cores[i % cores.length]}"><span class="ds">${i === 0 ? 'hoje' : DIAS[d.getDay()]}</span><span class="dn">${d.getDate()}</span></span></button>`;
       }).join('')}
     </div>`;
 }
