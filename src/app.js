@@ -224,15 +224,15 @@ function renderVitrine() {
 
 function renderVaral() {
   const dias = proximosDias();
-  const alturas = [10, 30, 4, 24, 14, 34, 8, 26, 2, 20, 32, 12, 28, 6];
   const cores = ['var(--menta)', 'var(--ouro)', 'var(--rosa-2)', 'var(--lilas)', 'var(--papel)'];
+  const extras = ['var(--rosa-2)', 'var(--menta)', 'var(--ouro)', 'var(--rosa-2)', 'var(--menta)'];
   $('#varal').innerHTML = `
     <div class="baloes" role="group" aria-label="Escolha a data da festa">
       ${dias.map((d, i) => {
-        const k = C.dayKey(d), sel = k === UI.vDia, curva = i % 2 ? 'q6 9 0 18 t0 18 t0 18' : 'q-6 9 0 18 t0 18 t0 18';
-        return `<button class="balao" style="--y:${alturas[i % alturas.length]}px;--cor:${cores[i % cores.length]};animation-delay:${i * 55}ms" aria-pressed="${sel}" data-vdia="${k}" aria-label="${fDiaLongo(d)}${i === 0 ? ', hoje' : ''}">
-          <svg viewBox="0 0 64 128" aria-hidden="true"><path class="fio-b" d="M32 72 ${curva}" fill="none" stroke-width="1.4"/><path class="no" d="M27 70h10l-5 -7z"/><ellipse class="corpo-b" cx="32" cy="34" rx="28" ry="32"/><ellipse cx="13" cy="30" rx="3.5" ry="8" fill="#fff" opacity=".45" transform="rotate(15 13 30)"/></svg>
-          <span class="txt"><span class="ds">${i === 0 ? 'hoje' : DIAS[d.getDay()]}</span><span class="dn">${d.getDate()}</span></span></button>`;
+        const k = C.dayKey(d), sel = k === UI.vDia, y = Math.round(Math.sin(i * 0.85) * 14);
+        return `<button class="balao" style="--y:${y}px;--cor:${cores[i % cores.length]};--extra:${extras[i % extras.length]};--extra2:${cores[(i + 2) % cores.length]};animation-delay:${i * 50}ms" aria-pressed="${sel}" data-vdia="${k}" aria-label="${fDiaLongo(d)}${i === 0 ? ', hoje' : ''}">
+          <i class="mini m1" aria-hidden="true"></i><i class="mini m2" aria-hidden="true"></i>
+          <span class="bola-b"><span class="ds">${i === 0 ? 'hoje' : DIAS[d.getDay()]}</span><span class="dn">${d.getDate()}</span></span></button>`;
       }).join('')}
     </div>`;
 }
